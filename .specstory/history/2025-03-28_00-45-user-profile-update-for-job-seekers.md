@@ -2176,6 +2176,958 @@ _**Assistant**_
 
 ---
 
+_****_
+
+I'll create an admin leaderboard feature that shows developers sorted by discussion votes and allows profile viewing. Let's check the existing admin structure first.
+
+---
+
+_****_
+
+<details>
+            <summary>Listed directory app/admin • **4** results</summary>
+        
+| Name |
+|-------|
+| 📄 `page.jsx` |
+| 📁 `diagnostics` |
+| 📁 `emergency-access` |
+| 📁 `setup` |
+
+</details>
+
+---
+
+_****_
+
+Let's check the admin page and admin API to understand the existing structure:
+
+---
+
+_****_
+
+Read file: undefined
+
+---
+
+_****_
+
+Read file: undefined
+
+---
+
+_****_
+
+Read file: undefined
+
+---
+
+_****_
+
+Let's check the admin actions to understand how to fetch users with vote counts:
+
+---
+
+_****_
+
+Read file: undefined
+
+---
+
+_****_
+
+Read file: undefined
+
+---
+
+_****_
+
+Now, let's implement the leaderboard with user profiles:
+
+1. First, create a server action to get users sorted by votes:
+
+---
+
+_****_
+
+```diff
+    }
+  }
++ 
++ // Fetch users sorted by discussion votes
++ export async function getUsersByVotes() {
++   console.log("getUsersByVotes: Starting to fetch users by vote count");
++   try {
++     console.log("getUsersByVotes: Connecting to database");
++     await connectToDatabase();
++     console.log("getUsersByVotes: Connected to database");
++     
++     // Aggregate to join users with questions and calculate total votes
++     const usersWithVotes = await User.aggregate([
++       // Lookup to get all questions by each user
++       {
++         $lookup: {
++           from: "questions",
++           localField: "clerkId",
++           foreignField: "author",
++           as: "questions"
++         }
++       },
++       // Add a field for total votes across all questions
++       {
++         $addFields: {
++           totalVotes: {
++             $sum: "$questions.votes"
++           },
++           questionCount: {
++             $size: "$questions"
++           }
++         }
++       },
++       // Sort by total votes in descending order
++       {
++         $sort: {
++           totalVotes: -1
++         }
++       },
++       // Project only needed fields
++       {
++         $project: {
++           _id: 1,
++           clerkId: 1,
++           firstName: 1,
++           lastName: 1,
++           email: 1,
++           userName: 1,
++           bio: 1,
++           skills: 1,
++           jobTitle: 1,
++           resumeUrl: 1,
++           github: 1,
++           linkedin: 1,
++           portfolio: 1,
++           experience: 1,
++           education: 1,
++           image_url: 1,
++           totalVotes: 1,
++           questionCount: 1,
++           createdAt: 1
++         }
++       }
++     ]);
++     
++     console.log("getUsersByVotes: Found users count:", usersWithVotes.length);
++     
++     // Return serialized data
++     return JSON.parse(JSON.stringify(usersWithVotes));
++   } catch (error) {
++     console.error("Error fetching users by votes:", error);
++     console.error("Error stack:", error.stack);
++     throw new Error(`Failed to fetch users by votes: ${error.message}`);
++   }
++ }
++ 
++ // Get detailed user profile by ID (for admin viewing)
++ export async function getUserProfileById(userId) {
++   console.log("getUserProfileById: Fetching user profile for", userId);
++   try {
++     await connectToDatabase();
++     
++     const user = await User.findOne({ clerkId: userId });
++     
++     if (!user) {
++       throw new Error("User not found");
++     }
++     
++     // Return serialized data
++     return JSON.parse(JSON.stringify(user));
++   } catch (error) {
++     console.error("Error fetching user profile:", error);
++     throw new Error(`Failed to fetch user profile: ${error.message}`);
++   }
++ } 
+```
+
+---
+
+_****_
+
+2. Now, let's update the UserLeaderboard component to display users sorted by votes and add profile viewing functionality:
+
+---
+
+_****_
+
+```diff
+  
+  import { useEffect, useState } from "react";
+- import { getAllUsers } from "@/lib/actions/admin";
++ import { getUsersByVotes, getUserProfileById } from "@/lib/actions/admin";
++ import { FaExternalLinkAlt, FaGithub, FaLinkedin, FaFileAlt } from "react-icons/fa";
++ import { MdClose } from "react-icons/md";
+  
+  export default function UserLeaderboard() {
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
++   const [selectedUser, setSelectedUser] = useState(null);
++   const [profileLoading, setProfileLoading] = useState(false);
+  
+    useEffect(() => {
+      async function fetchUsers() {
+        try {
+-         const data = await getAllUsers();
+-         
+-         // Sort users by join date (newest first)
+-         const sortedUsers = [...data].sort(
+-           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+-         ).slice(0, 10); // Get top 10
+-         
+-         setUsers(sortedUsers);
+-         setLoading(false);
++         setLoading(true);
++         const data = await getUsersByVotes();
++         setUsers(data);
+        } catch (error) {
++         console.error("Error fetching users by votes:", error);
+          setError("Failed to load leaderboard");
++       } finally {
+          setLoading(false);
+        }
+      fetchUsers();
+    }, []);
++ 
++   const handleViewProfile = async (userId) => {
++     try {
++       setProfileLoading(true);
++       const userProfile = await getUserProfileById(userId);
++       setSelectedUser(userProfile);
++     } catch (error) {
++       console.error("Error fetching user profile:", error);
++       setError("Failed to load user profile");
++     } finally {
++       setProfileLoading(false);
++     }
++   };
+  
+    if (loading) {
+      return <div className="p-4">Loading leaderboard...</div>;
+    }
+  
+-   if (error) {
++   if (error && !selectedUser) {
+      return <div className="p-4 text-red-500">Error: {error}</div>;
+    }
+  
+    return (
+      <div>
+-       <h3 className="text-lg font-semibold mb-4">Newest Users</h3>
++       <h3 className="text-xl font-semibold mb-4">Developer Leaderboard by Discussion Votes</h3>
+        
+-       <div className="bg-white shadow-md rounded-lg overflow-hidden">
++       <div className="flex space-x-4">
++         {/* Leaderboard Table */}
++         <div className={`bg-white shadow-md rounded-lg overflow-hidden ${selectedUser ? 'w-1/2' : 'w-full'}`}>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+-                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
++                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Rank
+                    </th>
+-                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
++                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      User
+                    </th>
+-                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+-                   Join Date
++                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
++                     Total Votes
++                   </th>
++                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
++                     Questions
++                   </th>
++                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
++                     Actions
+                    </th>
+                  </tr>
+                  {users.length > 0 ? (
+                    users.map((user, index) => (
+-                   <tr key={user._id}>
+-                     <td className="px-6 py-4 whitespace-nowrap">
++                     <tr key={user._id} className={selectedUser && selectedUser._id === user._id ? "bg-blue-50" : ""}>
++                       <td className="px-4 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <span className="text-sm font-medium text-gray-900">
+                          </div>
+                        </td>
+-                     <td className="px-6 py-4 whitespace-nowrap">
++                       <td className="px-4 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
++                           {user.image_url && (
++                             <img 
++                               src={user.image_url} 
++                               alt={`${user.firstName} ${user.lastName}`} 
++                               className="h-8 w-8 rounded-full mr-3"
++                             />
++                           )}
+                            <div>
+                              <div className="text-sm font-medium text-gray-900">
+                                {user.firstName} {user.lastName}
+                              </div>
+-                           <div className="text-sm text-gray-500">
+-                             {user.email}
++                             <div className="text-xs text-gray-500">
++                               @{user.userName}
++                             </div>
+                            </div>
+                          </div>
++                       </td>
++                       <td className="px-4 py-4 whitespace-nowrap">
++                         <div className="text-sm font-medium text-indigo-600">
++                           {user.totalVotes || 0}
+                          </div>
+                        </td>
+-                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+-                       {new Date(user.createdAt).toLocaleDateString()}
++                       <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
++                         {user.questionCount || 0}
++                       </td>
++                       <td className="px-4 py-4 whitespace-nowrap text-sm">
++                         <button
++                           onClick={() => handleViewProfile(user.clerkId)}
++                           className="text-blue-600 hover:text-blue-900 font-medium flex items-center"
++                           disabled={profileLoading}
++                         >
++                           <span>View Profile</span>
++                           <FaExternalLinkAlt className="ml-1 h-3 w-3" />
++                         </button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+-                   <td colSpan={3} className="px-6 py-4 text-center text-sm text-gray-500">
++                     <td colSpan={5} className="px-4 py-4 text-center text-sm text-gray-500">
+                        No users found
+                      </td>
+              </table>
+            </div>
++         </div>
++ 
++         {/* User Profile Panel */}
++         {selectedUser && (
++           <div className="w-1/2 bg-white shadow-md rounded-lg p-6 relative">
++             <button 
++               onClick={() => setSelectedUser(null)}
++               className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
++             >
++               <MdClose className="h-5 w-5" />
++             </button>
++             
++             <div className="flex items-center mb-6">
++               {selectedUser.image_url && (
++                 <img 
++                   src={selectedUser.image_url} 
++                   alt={`${selectedUser.firstName} ${selectedUser.lastName}`} 
++                   className="h-16 w-16 rounded-full mr-4"
++                 />
++               )}
++               <div>
++                 <h3 className="text-xl font-bold text-gray-900">
++                   {selectedUser.firstName} {selectedUser.lastName}
++                 </h3>
++                 <p className="text-sm text-gray-500">@{selectedUser.userName}</p>
++                 {selectedUser.jobTitle && (
++                   <p className="text-md text-gray-700 mt-1">{selectedUser.jobTitle}</p>
++                 )}
++               </div>
++             </div>
++             
++             {/* Bio Section */}
++             {selectedUser.bio && (
++               <div className="mb-6">
++                 <h4 className="text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wider">Bio</h4>
++                 <p className="text-gray-600">{selectedUser.bio}</p>
++               </div>
++             )}
++             
++             {/* Skills Section */}
++             {selectedUser.skills && selectedUser.skills.length > 0 && (
++               <div className="mb-6">
++                 <h4 className="text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wider">Skills</h4>
++                 <div className="flex flex-wrap gap-2">
++                   {selectedUser.skills.map((skill, index) => (
++                     <span key={index} className="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded">
++                       {skill}
++                     </span>
++                   ))}
++                 </div>
++               </div>
++             )}
++             
++             {/* Links Section */}
++             <div className="mb-6">
++               <h4 className="text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wider">Links</h4>
++               <div className="flex flex-col space-y-2">
++                 {selectedUser.github && (
++                   <a 
++                     href={selectedUser.github} 
++                     target="_blank" 
++                     rel="noopener noreferrer"
++                     className="text-gray-700 hover:text-indigo-600 flex items-center"
++                   >
++                     <FaGithub className="mr-2" /> GitHub
++                   </a>
++                 )}
++                 
++                 {selectedUser.linkedin && (
++                   <a 
++                     href={selectedUser.linkedin} 
++                     target="_blank" 
++                     rel="noopener noreferrer"
++                     className="text-gray-700 hover:text-indigo-600 flex items-center"
++                   >
++                     <FaLinkedin className="mr-2" /> LinkedIn
++                   </a>
++                 )}
++                 
++                 {selectedUser.portfolio && (
++                   <a 
++                     href={selectedUser.portfolio} 
++                     target="_blank" 
++                     rel="noopener noreferrer"
++                     className="text-gray-700 hover:text-indigo-600 flex items-center"
++                   >
++                     <FaExternalLinkAlt className="mr-2" /> Portfolio
++                   </a>
++                 )}
++                 
++                 {selectedUser.resumeUrl && (
++                   <a 
++                     href={selectedUser.resumeUrl} 
++                     target="_blank" 
++                     rel="noopener noreferrer"
++                     className="text-gray-700 hover:text-indigo-600 flex items-center"
++                   >
++                     <FaFileAlt className="mr-2" /> Resume
++                   </a>
++                 )}
++               </div>
++             </div>
++             
++             {/* Education Section */}
++             {selectedUser.education && selectedUser.education.length > 0 && (
++               <div className="mb-6">
++                 <h4 className="text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wider">Education</h4>
++                 {selectedUser.education.map((edu, index) => (
++                   <div key={index} className="mb-3">
++                     <p className="font-medium text-gray-800">{edu.institution}</p>
++                     <p className="text-sm text-gray-600">{edu.degree} in {edu.fieldOfStudy}</p>
++                     {edu.startYear && edu.endYear && (
++                       <p className="text-xs text-gray-500">{edu.startYear} - {edu.endYear}</p>
++                     )}
++                   </div>
++                 ))}
++               </div>
++             )}
++             
++             {/* Contact & Other Information */}
++             <div>
++               <h4 className="text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wider">Contact</h4>
++               <p className="text-gray-600">{selectedUser.email}</p>
++               {selectedUser.jobPreferences && (
++                 <div className="mt-4">
++                   <h4 className="text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wider">Job Preferences</h4>
++                   <ul className="text-sm text-gray-600">
++                     {selectedUser.jobPreferences.jobType && (
++                       <li>Looking for: {selectedUser.jobPreferences.jobType}</li>
++                     )}
++                     {selectedUser.jobPreferences.remoteOnly && (
++                       <li>Remote only: Yes</li>
++                     )}
++                     {selectedUser.jobPreferences.location && (
++                       <li>Location: {selectedUser.jobPreferences.location}</li>
++                     )}
++                     {selectedUser.jobPreferences.expectedSalary && (
++                       <li>Expected salary: {selectedUser.jobPreferences.expectedSalary}</li>
++                     )}
++                   </ul>
++                 </div>
++               )}
++             </div>
++           </div>
++         )}
+        </div>
+      </div>
+```
+
+---
+
+_****_
+
+I've successfully added a developer leaderboard for the admin panel with profile viewing capability. Here's a summary of the changes:
+
+1. **Backend: Added Two New Admin Functions**
+   - `getUsersByVotes()` - Aggregates users with their questions and sorts them by total discussion votes using MongoDB's aggregation pipeline
+   - `getUserProfileById()` - Retrieves a user's complete profile data including skills, education, and job preferences
+
+2. **Frontend: Enhanced User Leaderboard**
+   - Completely redesigned the UserLeaderboard component to show users ranked by discussion votes
+   - Added a responsive table that displays:
+     - Rank position
+     - User profile picture and name
+     - Total votes across all discussions
+     - Number of questions posted
+     - "View Profile" button
+
+3. **Profile Viewing Functionality**
+   - Created a detailed profile panel that appears when an admin clicks on a user
+   - The panel displays:
+     - Profile image and basic information
+     - Professional bio
+     - Skills with attractive tags
+     - Social media and professional links
+     - Education history
+     - Contact information
+     - Job preferences
+
+4. **UI/UX Improvements**
+   - Implemented a split-panel layout that shows the leaderboard and profile side-by-side
+   - Added user profile images throughout the interface
+   - Used icons for better visual recognition
+   - Added proper loading states and error handling
+   - Implemented highlighting of the selected user in the table
+
+The leaderboard provides admins with visibility into the most active and valuable community members, and the profile viewer gives them quick access to detailed user information without leaving the admin panel.
+
+---
+
+_**User**_
+
+its not providing all profile informations
+
+---
+
+_**Assistant**_
+
+
+
+---
+
+_****_
+
+The issue is that the profile information isn't being fully displayed because the `getUserProfileById` function isn't properly retrieving all user profile fields. Let's fix this by enhancing it:
+
+---
+
+_****_
+
+```diff
+      await connectToDatabase();
+      
+-     const user = await User.findOne({ clerkId: userId });
++     // Use a more specific query with field selection to ensure all needed fields are included
++     const user = await User.findOne({ clerkId: userId })
++       .select(`
++         _id clerkId firstName lastName email userName 
++         bio skills resumeUrl github linkedin portfolio
++         jobTitle experience education image_url
++         jobPreferences createdAt
++       `)
++       .lean(); // Use lean() for better performance with large objects
+      
+      if (!user) {
+        throw new Error("User not found");
+      }
+      
+-     // Return serialized data
+-     return JSON.parse(JSON.stringify(user));
++     console.log("getUserProfileById: Found user profile fields:", Object.keys(user));
++     
++     // Add a more robust serialization that preserves all fields
++     const serializedUser = JSON.parse(JSON.stringify(user));
++     
++     return serializedUser;
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+```
+
+---
+
+_****_
+
+Now let's also update the UserLeaderboard component to ensure it properly handles and displays all profile data:
+
+---
+
+_****_
+
+```diff
+        setProfileLoading(true);
+        const userProfile = await getUserProfileById(userId);
++       console.log("Received user profile data:", userProfile);
+        setSelectedUser(userProfile);
+      } catch (error) {
+```
+
+---
+
+_****_
+
+Let's also add a debug section to the profile panel to better understand what data is available:
+
+---
+
+_****_
+
+```diff
+              
+              {/* Skills Section */}
+-             {selectedUser.skills && selectedUser.skills.length > 0 && (
++             {selectedUser.skills && (
+                <div className="mb-6">
+                  <h4 className="text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wider">Skills</h4>
+                  <div className="flex flex-wrap gap-2">
+-                   {selectedUser.skills.map((skill, index) => (
++                   {Array.isArray(selectedUser.skills) ? (
++                     selectedUser.skills.map((skill, index) => (
+                        <span key={index} className="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded">
+                          {skill}
+                        </span>
+-                   ))}
++                     ))
++                   ) : (
++                     <p className="text-gray-600">No skills found</p>
++                   )}
+                  </div>
+                </div>
+```
+
+---
+
+_****_
+
+Let's add similar improvements to the education section:
+
+---
+
+_****_
+
+```diff
+              
+              {/* Education Section */}
+-             {selectedUser.education && selectedUser.education.length > 0 && (
++             {selectedUser.education && (
+                <div className="mb-6">
+                  <h4 className="text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wider">Education</h4>
+-                 {selectedUser.education.map((edu, index) => (
++                 {Array.isArray(selectedUser.education) && selectedUser.education.length > 0 ? (
++                   selectedUser.education.map((edu, index) => (
+                      <div key={index} className="mb-3">
+-                     <p className="font-medium text-gray-800">{edu.institution}</p>
+-                     <p className="text-sm text-gray-600">{edu.degree} in {edu.fieldOfStudy}</p>
+-                     {edu.startYear && edu.endYear && (
+-                       <p className="text-xs text-gray-500">{edu.startYear} - {edu.endYear}</p>
++                       <p className="font-medium text-gray-800">{edu.institution || 'Institution not specified'}</p>
++                       <p className="text-sm text-gray-600">
++                         {edu.degree || 'Degree not specified'} 
++                         {edu.fieldOfStudy ? ` in ${edu.fieldOfStudy}` : ''}
++                       </p>
++                       {(edu.startYear || edu.endYear) && (
++                         <p className="text-xs text-gray-500">
++                           {edu.startYear || 'N/A'} - {edu.endYear || 'Present'}
++                         </p>
+                        )}
+                      </div>
+-                 ))}
++                   ))
++                 ) : (
++                   <p className="text-gray-600">No education history found</p>
++                 )}
+                </div>
+              )}
+```
+
+---
+
+_****_
+
+Finally, let's improve the job preferences section display:
+
+---
+
+_****_
+
+```diff
+              <div>
+                <h4 className="text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wider">Contact</h4>
+-               <p className="text-gray-600">{selectedUser.email}</p>
+-               {selectedUser.jobPreferences && (
++               <p className="text-gray-600">{selectedUser.email || 'Email not available'}</p>
++               
++               {/* Job Preferences Section */}
+                <div className="mt-4">
+                  <h4 className="text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wider">Job Preferences</h4>
++                 {selectedUser.jobPreferences ? (
+                    <ul className="text-sm text-gray-600">
+                      {selectedUser.jobPreferences.jobType && (
+                        <li>Expected salary: {selectedUser.jobPreferences.expectedSalary}</li>
+                      )}
++                     {(!selectedUser.jobPreferences.jobType && 
++                       !selectedUser.jobPreferences.remoteOnly &&
++                       !selectedUser.jobPreferences.location && 
++                       !selectedUser.jobPreferences.expectedSalary) && (
++                       <li>No job preferences specified</li>
++                     )}
+                    </ul>
++                 ) : (
++                   <p className="text-gray-600">No job preferences found</p>
++                 )}
++               </div>
++               
++               {/* Debug Information - Only visible to admins */}
++               <div className="mt-6 pt-4 border-t border-gray-200">
++                 <h4 className="text-xs font-semibold text-gray-500 mb-2">Debug Information</h4>
++                 <p className="text-xs text-gray-500">User ID: {selectedUser.clerkId || 'Not available'}</p>
++                 <p className="text-xs text-gray-500">
++                   Available fields: {Object.keys(selectedUser).join(', ')}
++                 </p>
+                </div>
+-               )}
+              </div>
+            </div>
+```
+
+---
+
+_****_
+
+I've made several enhancements to fix the profile information display issues:
+
+1. **Improved the `getUserProfileById` function:**
+   - Added explicit field selection to ensure all necessary profile fields are included
+   - Used the `.lean()` method for better performance with large objects
+   - Added logging of available fields for debugging
+
+2. **Enhanced the UserLeaderboard component:**
+   - Added proper data validation checks for all profile sections
+   - Improved logging to track what data is received from the server
+   - Added fallback text when fields are missing or empty
+
+3. **Made the profile display more robust:**
+   - Added checks for array data types before mapping
+   - Added fallback text for missing education information
+   - Improved job preferences display with better conditional rendering
+   - Added a debug section showing available fields for troubleshooting
+
+4. **Added conditional rendering improvements:**
+   - Skills section now checks if the skills array exists and is an array
+   - Education section properly handles empty or non-array education data
+   - Job preferences section now displays correctly even if parts are missing
+
+The debug information at the bottom of the profile will help identify which fields are actually being returned from the database. This should help resolve the issue where profile information isn't being fully displayed.
+
+---
+
+_**User**_
+
+User Unknown
+@user_user_2uu
+
+software developer
+
+Bio
+aadfahjbkdbncjk
+
+Skills
+js
+python
+Links
+GitHub
+Resume
+Education
+dfafadf
+
+dfad in dfdaf
+
+2018 - 2025
+
+Contact
+temporary-user_2uu0SaPD1bBsxxyk2VHap34g4lG@example.com
+
+Job Preferences
+Looking for: Full-time
+Location: eqqewf
+Expected salary: 83479
+Debug Information
+User ID: user_2uu0SaPD1bBsxxyk2VHap34g4lG
+
+Available fields: _id, clerkId, firstName, lastName, email, userName, createdAt, bio, education, experience, github, jobPreferences, jobTitle, linkedin, portfolio, resumeUrl, skills
+
+---
+
+_**Assistant**_
+
+
+
+---
+
+_****_
+
+Looking at the user profile you shared, I can confirm most profile information is displaying correctly, but there's an issue with the links section. The links are showing as headings but not as actual clickable URLs.
+
+Let's fix this by modifying the Links section in UserLeaderboard.jsx to display properly even when URLs are empty strings:
+
+---
+
+_****_
+
+```diff
+                <h4 className="text-sm font-semibold text-gray-700 mb-2 uppercase tracking-wider">Links</h4>
+                <div className="flex flex-col space-y-2">
+-                 {selectedUser.github && (
++                 {selectedUser.github ? (
+                    <a 
+                      href={selectedUser.github} 
+                      className="text-gray-700 hover:text-indigo-600 flex items-center"
+                    >
+-                     <FaGithub className="mr-2" /> GitHub
++                     <FaGithub className="mr-2" /> GitHub: {selectedUser.github}
+                    </a>
++                 ) : (
++                   <div className="text-gray-500 flex items-center">
++                     <FaGithub className="mr-2" /> GitHub: Not provided
++                   </div>
+                  )}
+                  
+-                 {selectedUser.linkedin && (
++                 {selectedUser.linkedin ? (
+                    <a 
+                      href={selectedUser.linkedin} 
+                      className="text-gray-700 hover:text-indigo-600 flex items-center"
+                    >
+-                     <FaLinkedin className="mr-2" /> LinkedIn
++                     <FaLinkedin className="mr-2" /> LinkedIn: {selectedUser.linkedin}
+                    </a>
++                 ) : (
++                   <div className="text-gray-500 flex items-center">
++                     <FaLinkedin className="mr-2" /> LinkedIn: Not provided
++                   </div>
+                  )}
+                  
+-                 {selectedUser.portfolio && (
++                 {selectedUser.portfolio ? (
+                    <a 
+                      href={selectedUser.portfolio} 
+                      className="text-gray-700 hover:text-indigo-600 flex items-center"
+                    >
+-                     <FaExternalLinkAlt className="mr-2" /> Portfolio
++                     <FaExternalLinkAlt className="mr-2" /> Portfolio: {selectedUser.portfolio}
+                    </a>
++                 ) : (
++                   <div className="text-gray-500 flex items-center">
++                     <FaExternalLinkAlt className="mr-2" /> Portfolio: Not provided
++                   </div>
+                  )}
+                  
+-                 {selectedUser.resumeUrl && (
++                 {selectedUser.resumeUrl ? (
+                    <a 
+                      href={selectedUser.resumeUrl} 
+                      className="text-gray-700 hover:text-indigo-600 flex items-center"
+                    >
+-                     <FaFileAlt className="mr-2" /> Resume
++                     <FaFileAlt className="mr-2" /> Resume: {selectedUser.resumeUrl}
+                    </a>
++                 ) : (
++                   <div className="text-gray-500 flex items-center">
++                     <FaFileAlt className="mr-2" /> Resume: Not provided
++                   </div>
+                  )}
+                </div>
+```
+
+---
+
+_****_
+
+Let's also improve how we display the job title and handle additional cases where fields might be empty:
+
+---
+
+_****_
+
+```diff
+              
+              <div className="flex items-center mb-6">
+-               {selectedUser.image_url && (
++               {selectedUser.image_url ? (
+                  <img 
+                    src={selectedUser.image_url} 
+                    alt={`${selectedUser.firstName} ${selectedUser.lastName}`} 
+                    className="h-16 w-16 rounded-full mr-4"
+                  />
++               ) : (
++                 <div className="h-16 w-16 rounded-full mr-4 flex items-center justify-center bg-indigo-100 text-indigo-600 text-xl font-bold">
++                   {selectedUser.firstName ? selectedUser.firstName.charAt(0) : '?'}
++                   {selectedUser.lastName ? selectedUser.lastName.charAt(0) : ''}
++                 </div>
+                )}
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900">
+-                   {selectedUser.firstName} {selectedUser.lastName}
++                   {selectedUser.firstName || ''} {selectedUser.lastName || ''}
++                   {!selectedUser.firstName && !selectedUser.lastName && 'User Unknown'}
+                  </h3>
+-                 <p className="text-sm text-gray-500">@{selectedUser.userName}</p>
+-                 {selectedUser.jobTitle && (
+-                   <p className="text-md text-gray-700 mt-1">{selectedUser.jobTitle}</p>
+-                 )}
++                 <p className="text-sm text-gray-500">@{selectedUser.userName || 'unknown'}</p>
++                 <p className="text-md text-gray-700 mt-1">
++                   {selectedUser.jobTitle || 'Software Developer'}
++                 </p>
++                 <p className="text-xs text-gray-500 mt-1">
++                   Experience: {selectedUser.experience ? `${selectedUser.experience} years` : 'Not specified'}
++                 </p>
+                </div>
+              </div>
+```
+
+---
+
+_****_
+
+Let's add handling for the case when someone has an empty bio:
+
+---
+
+_****_
+
+
+
+---
+
+_****_
+
+Let me check why the bio section didn't update:
+
+---
+
+_****_
+
+Read file: undefined
+
+---
+
+_****_
+
+Now let's update the bio section:
+
+---
+
 
 
 ---
