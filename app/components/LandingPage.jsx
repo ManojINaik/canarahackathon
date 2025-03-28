@@ -250,10 +250,10 @@ const LandingPage = () => {
               </motion.div>
               <motion.div whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 300 }}>
                 <Link
-                  href="#sdgs"
+                  href="#"
                   className="text-lg text-gray-600 hover:text-indigo-600 transition-colors relative hover-underline-animation"
                 >
-                  SDGs
+                  
                 </Link>
               </motion.div>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
@@ -303,11 +303,11 @@ const LandingPage = () => {
                   </motion.div>
                   <motion.div variants={fadeIn}>
                     <Link
-                      href="#sdgs"
+                      href="#"
                       className="text-lg text-gray-600 hover:text-indigo-600 transition-colors block"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      SDGs
+                      
                     </Link>
                   </motion.div>
                   <motion.div variants={fadeIn}>
@@ -786,8 +786,8 @@ const LandingPage = () => {
           </motion.div>
         </div>
         
-        {/* SDGs Section */}
-        <div id="sdgs" className="py-16 sm:py-24 bg-gradient-to-b from-white to-indigo-50/20 relative overflow-hidden">
+        {/*  Section */}
+        <div id="ai" className="py-16 sm:py-24 bg-gradient-to-b from-white to-indigo-50/20 relative overflow-hidden">
           {/* Decorative elements */}
           <div className="absolute top-1/4 right-0 w-64 h-64 bg-indigo-100 rounded-full mix-blend-multiply filter blur-xl opacity-50"></div>
           <div className="absolute bottom-1/4 left-0 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-50"></div>
