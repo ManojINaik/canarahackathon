@@ -1,0 +1,425 @@
+[GSAPGSAP](https://gsap.com/) Menu
+
+- Tools
+
+
+
+
+- [Core](https://gsap.com/core/)
+- [Scroll](https://gsap.com/scroll/)
+- [SVG](https://gsap.com/svg/)
+- [UI](https://gsap.com/ui/)
+- [Text](https://gsap.com/text/)
+
+- [Installation](https://gsap.com/docs/v3/Installation)
+- [Starter Templates](https://gsap.com/demos)
+- [GSAP & React](https://gsap.com/resources/React)
+- [Video Lessons](https://www.youtube.com/@GreenSockLearning)
+
+Professional-grade JavaScript animation for the modern web
+
+![](https://gsap.com/img/header-shapes.png)
+
+- [Pricing](https://gsap.com/pricing/)
+- [Showcase](https://gsap.com/showcase/)
+- [Community](https://gsap.com/community/)
+- [Learn GSAP](https://gsap.com/resources/)
+- [Docs](https://gsap.com/docs/v3)
+
+- Notifications
+
+
+
+
+
+
+#### Notifications
+
+
+
+[Notification Settings](https://gsap.com/community/notifications/options) [View All](https://gsap.com/community/notifications/)
+
+- Messages
+
+
+
+
+
+
+#### Messages
+
+
+
+[Compose new](https://gsap.com/community/messenger/compose) [Go to Inbox](https://gsap.com/community/messenger)
+
+- Login/Create Account
+
+
+
+
+#### Sign In
+
+
+
+
+
+
+
+Login [Forgot your password?](https://gsap.com/community/lostpassword/)
+
+
+
+
+
+#### Why create an account?
+
+
+
+- It's free
+
+- Participate in the forums
+
+- Updates on the products you use
+
+- Exclusive offers and more
+
+
+[Create an Account](https://gsap.com/community/register)
+
+- [My Account](https://gsap.com/community/account-dashboard)
+
+
+
+
+
+
+
+
+![Guest](https://gsap.com/community/uploads/set_resources_8/84c1e40ea0e759e3f1505eb1788ddf3c_default_photo.png)
+
+
+
+
+
+Guest
+
+
+
+
+
+
+
+Guests
+
+
+
+
+
+
+
+- [Dashboard](https://gsap.com/community/account-dashboard)
+- [Orders & Billing](https://gsap.com/community/clients/orders)
+- [Account Settings](https://gsap.com/community/settings)
+- [Logout](https://gsap.com/community/logout/?csrfKey=b3abded3d801e0e733fbd7b0d05fa10a)
+
+- [Get GSAP](https://gsap.com/docs/v3/Installation)
+
+- Tools
+  - [Core](https://gsap.com/core/)
+  - [Scroll](https://gsap.com/scroll/)
+  - [SVG](https://gsap.com/svg/)
+  - [UI](https://gsap.com/ui/)
+  - [Text](https://gsap.com/text/)
+- [Pricing](https://gsap.com/pricing/)
+- [Showcase](https://gsap.com/showcase/)
+- [Community](https://gsap.com/community/)
+- [Learn GSAP](https://gsap.com/resources/)
+- [Docs](https://gsap.com/docs/v3/)
+
+- Login/Create Account
+- ![Guest](https://gsap.com/community/uploads/set_resources_8/84c1e40ea0e759e3f1505eb1788ddf3c_default_photo.png)
+
+
+
+
+
+Guest
+
+
+
+
+
+
+
+Guests
+
+
+![Guest](https://gsap.com/community/uploads/set_resources_8/84c1e40ea0e759e3f1505eb1788ddf3c_default_photo.png)
+
+Guest
+
+Guests
+
+- [Dashboard](https://gsap.com/community/account-dashboard)
+- [Orders & Billing](https://gsap.com/community/clients/orders)
+- [Account Settings](https://gsap.com/community/settings)
+- [Logout](https://gsap.com/community/logout/?csrfKey=b3abded3d801e0e733fbd7b0d05fa10a)
+- [Messages](https://gsap.com/community/messenger/)
+- [Notifications](https://gsap.com/community/notifications/)
+
+#### Sign In
+
+Login [Forgot your password?](https://gsap.com/community/lostpassword/)
+
+#### Not got an account?
+
+[Create an Account](https://gsap.com/community/register)
+
+- [CodePen](https://codepen.io/GreenSock)
+- [GitHub](https://github.com/greensock/GreenSock-JS/)
+- [Facebook](https://www.facebook.com/greensock/)
+- [LinkedIn](https://www.linkedin.com/company/greensock)
+- [x](https://www.twitter.com/greensock/)
+
+![](https://gsap.com/img/header-shapes.png)
+
+[Skip to main content](https://gsap.com/docs/v3/GSAP/gsap.utils/#__docusaurus_skipToContent_fallback)
+
+[Docs](https://gsap.com/docs/v3/) [Learning](https://gsap.com/resources)
+
+[v3.12.7](https://gsap.com/docs/v3/)
+
+- [v3.12.7](https://gsap.com/docs/v3/GSAP/gsap.utils)
+- [v2 - archived](https://www.gsap.com/archived-docs/)
+
+Search`` `K`
+
+- [docsHome](https://gsap.com/docs/v3/)
+- Quick Start
+- [Installation](https://gsap.com/docs/v3/Installation)
+
+- [YouTube Channel](https://www.youtube.com/@GreenSockLearning)
+- [Trial the Club Plugins](https://gsap.com/resources/trial)
+- [Demos / Starter Templates](https://gsap.com/demos)
+- [Cheatsheet](https://gsap.com/cheatsheet)
+- Fundamentals
+- [GSAP](https://gsap.com/docs/v3/GSAP/)
+
+  - [properties](https://gsap.com/docs/v3/GSAP/gsap.utils/#)
+
+    - [gsap.effects](https://gsap.com/docs/v3/GSAP/gsap.effects)
+    - [gsap.globalTimeline](https://gsap.com/docs/v3/GSAP/gsap.globalTimeline)
+    - [gsap.ticker](https://gsap.com/docs/v3/GSAP/gsap.ticker)
+    - [gsap.utils](https://gsap.com/docs/v3/GSAP/gsap.utils)
+    - [gsap.version](https://gsap.com/docs/v3/GSAP/gsap.version)
+  - [methods](https://gsap.com/docs/v3/GSAP/gsap.utils/#)
+
+    - [gsap.config()](https://gsap.com/docs/v3/GSAP/gsap.config())
+    - [gsap.context()](https://gsap.com/docs/v3/GSAP/gsap.context())
+    - [gsap.defaults()](https://gsap.com/docs/v3/GSAP/gsap.defaults())
+    - [gsap.delayedCall()](https://gsap.com/docs/v3/GSAP/gsap.delayedCall())
+    - [gsap.exportRoot()](https://gsap.com/docs/v3/GSAP/gsap.exportRoot())
+    - [gsap.from()](https://gsap.com/docs/v3/GSAP/gsap.from())
+    - [gsap.fromTo()](https://gsap.com/docs/v3/GSAP/gsap.fromTo())
+    - [gsap.getById()](https://gsap.com/docs/v3/GSAP/gsap.getById())
+    - [gsap.getProperty()](https://gsap.com/docs/v3/GSAP/gsap.getProperty())
+    - [gsap.getTweensOf()](https://gsap.com/docs/v3/GSAP/gsap.getTweensOf())
+    - [gsap.isTweening()](https://gsap.com/docs/v3/GSAP/gsap.isTweening())
+    - [gsap.killTweensOf()](https://gsap.com/docs/v3/GSAP/gsap.killTweensOf())
+    - [gsap.matchMedia()](https://gsap.com/docs/v3/GSAP/gsap.matchMedia())
+    - [gsap.matchMediaRefresh()](https://gsap.com/docs/v3/GSAP/gsap.matchMediaRefresh())
+    - [gsap.parseEase()](https://gsap.com/docs/v3/GSAP/gsap.parseEase())
+    - [gsap.quickSetter()](https://gsap.com/docs/v3/GSAP/gsap.quickSetter())
+    - [gsap.quickTo()](https://gsap.com/docs/v3/GSAP/gsap.quickTo())
+    - [gsap.registerEase()](https://gsap.com/docs/v3/GSAP/gsap.registerEase())
+    - [gsap.registerEffect()](https://gsap.com/docs/v3/GSAP/gsap.registerEffect())
+    - [gsap.registerPlugin()](https://gsap.com/docs/v3/GSAP/gsap.registerPlugin())
+    - [gsap.set()](https://gsap.com/docs/v3/GSAP/gsap.set())
+    - [gsap.timeline()](https://gsap.com/docs/v3/GSAP/gsap.timeline())
+    - [gsap.to()](https://gsap.com/docs/v3/GSAP/gsap.to())
+    - [gsap.updateRoot()](https://gsap.com/docs/v3/GSAP/gsap.updateRoot())
+  - [Internal Plugins](https://gsap.com/docs/v3/GSAP/gsap.utils/#)
+- [Tween](https://gsap.com/docs/v3/GSAP/Tween)
+
+- [Timeline](https://gsap.com/docs/v3/GSAP/Timeline)
+
+- [CSS](https://gsap.com/docs/v3/GSAP/CorePlugins/CSS)
+- [Easing](https://gsap.com/docs/v3/Eases)
+
+- Plugins
+- [What's a plugin?](https://gsap.com/docs/v3/Plugins)
+- [ScrollTrigger](https://gsap.com/docs/v3/Plugins/ScrollTrigger/)
+
+- [ScrollSmoother](https://gsap.com/docs/v3/Plugins/ScrollSmoother/)
+
+- [Flip](https://gsap.com/docs/v3/Plugins/Flip/)
+
+- [more plugins](https://gsap.com/docs/v3/GSAP/gsap.utils/#)
+
+- Useful features & tools
+- [Utility Methods](https://gsap.com/docs/v3/GSAP/UtilityMethods)
+
+- [Staggers](https://gsap.com/resources/getting-started/Staggers)
+- [Helper functions](https://gsap.com/docs/v3/HelperFunctions/)
+
+- [React - useGSAP()](https://gsap.com/resources/React)
+
+- [GSAP](https://gsap.com/docs/v3/GSAP/)
+- properties
+- gsap.utils
+
+On this page
+
+# gsap.utils
+
+### Type : Object [​](https://gsap.com/docs/v3/GSAP/gsap.utils/\#type--object "Direct link to Type : Object")
+
+Combining utility Methods
+
+GSAP 3 Utility Methods Demo - YouTube
+
+GSAP Learning
+
+32.2K subscribers
+
+[GSAP 3 Utility Methods Demo](https://www.youtube.com/watch?v=NqiF5xIuMd0)
+
+GSAP Learning
+
+Search
+
+Watch later
+
+Share
+
+Copy link
+
+Info
+
+Shopping
+
+Tap to unmute
+
+If playback doesn't begin shortly, try restarting your device.
+
+More videos
+
+## More videos
+
+You're signed out
+
+Videos you watch may be added to the TV's watch history and influence TV recommendations. To avoid this, cancel and sign in to YouTube on your computer.
+
+CancelConfirm
+
+Share
+
+Include playlist
+
+An error occurred while retrieving sharing information. Please try again later.
+
+[Watch on](https://www.youtube.com/watch?v=NqiF5xIuMd0&embeds_referring_euri=https%3A%2F%2Fgsap.com%2F)
+
+0:00
+
+0:00 / 12:22•Live
+
+•
+
+[Watch on YouTube](https://www.youtube.com/watch?v=NqiF5xIuMd0 "Watch on YouTube")
+
+`gsap.utils` provides access to some surprisingly helpful utility functions. Note that many of them can optionally return FUNCTIONS so that they can be plugged directly into tweens, leveraging GSAP's function-based capabilities. In that case, they'll get called once for each target rather than just using the same end value for them all.
+
+| Utility | Description |
+| --- | --- |
+| [checkPrefix()](https://gsap.com/docs/v3/GSAP/UtilityMethods/checkPrefix()) | Prefixes the provided CSS property if necessary (ex: `checkPrefix("transform")` --\> `"msTransform"` when run in IE9; returns null if the property isn't supported at all). |
+| [clamp()](https://gsap.com/docs/v3/GSAP/UtilityMethods/clamp()) | Clamp a value to fit within a specific range (ex: `clamp(0, 100, -12)` --\> `0`). |
+| [distribute()](https://gsap.com/docs/v3/GSAP/UtilityMethods/distribute()) | Distribute a value among an array of objects either linearly or according to their position in a grid, optionally with easing applied. |
+| [getUnit()](https://gsap.com/docs/v3/GSAP/UtilityMethods/getUnit()) | Get the unit of a string (ex: `getUnit("30px")` --\> `"px"`). |
+| [interpolate()](https://gsap.com/docs/v3/GSAP/UtilityMethods/interpolate()) | Interpolate between almost any two values (numbers, colors, strings, arrays, complex strings, or even objects with multiple properties) (ex: `interpolate("red", "blue", 0.5)` --\> `"rgba(128,0,128,1)"`). |
+| [mapRange()](https://gsap.com/docs/v3/GSAP/UtilityMethods/mapRange()) | Map one range to another (ex: `mapRange(-10, 10, 0, 100, 5)` --\> `75`). |
+| [normalize()](https://gsap.com/docs/v3/GSAP/UtilityMethods/normalize()) | Map a number within a range to a progress between 0 to 1 (ex: `normalize(100, 200, 150)` --\> `0.5`). |
+| [`pipe()`](https://gsap.com/docs/v3/GSAP/UtilityMethods/pipe()) | Sequence a number of function calls, passing the result of each into the next (ex: `pipe(clamp(0, 100), snap(5))(8)` --\> `10`). |
+| [random()](https://gsap.com/docs/v3/GSAP/UtilityMethods/random()) | Generate a random number based on parameters (ex: `random(0, 100, 5)` --\> `65`) or randomly pick an element from in a supplied array (ex. `random(["red", "green", "blue"])` --\> `"red"`). |
+| [selector()](https://gsap.com/docs/v3/GSAP/UtilityMethods/selector()) | Returns a selector **function** that is scoped to a particular Element (or React ref or Angular ElementRef). (ex: `selector(myElement)`) |
+| [shuffle()](https://gsap.com/docs/v3/GSAP/UtilityMethods/shuffle()) | Shuffles the contents of an array in-place. (ex: `shuffle([1, 2, 3, 4, 5])`--\> `[4, 2, 1, 5, 3]`) |
+| [snap()](https://gsap.com/docs/v3/GSAP/UtilityMethods/snap()) | Snap a value to either an increment (ex: `snap(5, 13)` --\> `15`) or to the closest value in an array (ex: `snap([0, 5, 10], 7)` --\> `5`). |
+| [splitColor()](https://gsap.com/docs/v3/GSAP/UtilityMethods/splitColor()) | Split any color into its red, green, blue (and optionally alpha) components. Or hue, saturation, and brightness. (ex: `splitColor("red")` --\> `[255, 0, 0]`). |
+| [toArray()](https://gsap.com/docs/v3/GSAP/UtilityMethods/toArray()) | Convert almost any array-like object to an array, including selector text! (ex: `toArray(".class")` --\> `[element1, element2]`). |
+| [unitize()](https://gsap.com/docs/v3/GSAP/UtilityMethods/unitize()) | Wraps around another utility function, allowing it to accept values with units like `"20px"` or `"50%"`, stripping off the unit when feeding into the wrapped utility function, and then adding it back to the result (ex. `var wrap = gsap.utils.unitize( gsap.utils.wrap(0, 100) ); wrap("150px");` --\> `"50px"`). Or force a specific unit (ex: `unitize( gsap.utils.mapRange(-10, 10, 0, 100), "%");` --\> always returns with `"%"`). |
+| [wrap()](https://gsap.com/docs/v3/GSAP/UtilityMethods/wrap()) | Place a number into a specified range such that when it exceeds the maximum, it wraps back to the start and if it is less than the minimum, it wraps to the end (ex. `wrap(5, 10, 12)` --\> `7`). Or cycle through an **Array** such that when the provided index is greater than the length of the array, it wraps back to the start (ex: `wrap([0, 10, 20], 4)` --\> `10`). |
+| [wrapYoyo()](https://gsap.com/docs/v3/GSAP/UtilityMethods/wrapYoyo()) | Place a number into a specified range such that when it exceeds the maximum, it yoyos back toward the start and if it is less than the minimum, it yoyos forward to the end (ex. `wrapYoyo(5, 10, 12)` --\> `8`). Or cycle through an **Array** such that when the provided index is greater than the length of the array, it yoyos back to the start (ex: `wrap([0, 10, 20, 30], 4)` --\> `20`) |
+
+[Previous\\
+\\
+gsap.ticker](https://gsap.com/docs/v3/GSAP/gsap.ticker) [Next\\
+\\
+gsap.version](https://gsap.com/docs/v3/GSAP/gsap.version)
+
+## Contents
+
+- [Type : Object](https://gsap.com/docs/v3/GSAP/gsap.utils/#type--object)
+
+## [GSAP](https://gsap.com/)
+
+- [Core](https://gsap.com/core/)
+- [Docs](https://gsap.com/docs/v3)
+- [All Plugins](https://gsap.com/docs/v3/Plugins/)
+
+## [Scroll](https://gsap.com/scroll/)
+
+- [ScrollTrigger](https://gsap.com/docs/v3/Plugins/ScrollTrigger)
+- [ScrollSmoother](https://gsap.com/docs/v3/Plugins/ScrollSmoother)
+- [ScrollTo](https://gsap.com/docs/v3/Plugins/ScrollToPlugin)
+- [Observer](https://gsap.com/docs/v3/Plugins/Observer)
+
+## [SVG](https://gsap.com/svg/)
+
+- [MorphSVG](https://gsap.com/docs/v3/Plugins/MorphSVGPlugin)
+- [DrawSVG](https://gsap.com/docs/v3/Plugins/DrawSVGPlugin)
+- [MotionPath](https://gsap.com/docs/v3/Plugins/MotionPathPlugin)
+- [MotionPathHelper](https://gsap.com/docs/v3/Plugins/MotionPathHelper)
+
+## [UI](https://gsap.com/ui/)
+
+- [Flip](https://gsap.com/docs/v3/Plugins/Flip)
+- [SplitText](https://gsap.com/docs/v3/Plugins/SplitText)
+- [Draggable](https://gsap.com/docs/v3/Plugins/Draggable)
+- [Inertia](https://gsap.com/docs/v3/Plugins/InertiaPlugin)
+- [Observer](https://gsap.com/docs/v3/Plugins/Observer)
+
+## [Text](https://gsap.com/text/)
+
+- [SplitText](https://gsap.com/docs/v3/Plugins/SplitText)
+- [ScrambleText](https://gsap.com/docs/v3/Plugins/ScrambleTextPlugin)
+- [Text](https://gsap.com/docs/v3/Plugins/TextPlugin)
+
+Subscribe to the GSAP® newsletter to stay up-to-date with the latest releases
+
+Email \*
+
+## Company
+
+- [About](https://gsap.com/about/)
+- [Blog](https://gsap.com/blog/)
+- [Contact Us](https://gsap.com/community/contact/)
+
+## GSAP
+
+- [Pricing](https://gsap.com/pricing/)
+- [Showcase](https://gsap.com/showcase/)
+- [Learn GSAP](https://gsap.com/resources/)
+- [Community](https://gsap.com/community/)
+
+## Connect
+
+- [Codepen](https://www.codepen.io/GreenSock)
+- [GitHub](https://github.com/greensock/GreenSock-JS)
+- [Facebook](https://www.facebook.com/greensock)
+- [LinkedIn](https://www.linkedin.com/company/greensock)
+- [X](https://www.twitter.com/greensock)
+
+©2025 GSAP - A Webflow Product. All rights reserved.
+
+- [Privacy Policy.](https://gsap.com/community/privacy-policy/)
+- [Terms of Use.](https://gsap.com/community/terms-of-use/)

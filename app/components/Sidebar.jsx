@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FaChevronDown,
   FaCodepen,
@@ -9,6 +10,8 @@ import {
   FaQuestionCircle,
   FaUserShield,
   FaUser,
+  FaRobot,
+  FaBrain,
 } from "react-icons/fa";
 import { MdAddBox, MdNotifications } from "react-icons/md";
 import { SiGoogleclassroom } from "react-icons/si";
@@ -18,12 +21,17 @@ import {
   TbLayoutSidebarLeftExpandFilled,
 } from "react-icons/tb";
 import { useUser } from "@clerk/nextjs";
+import { usePathname } from "next/navigation";
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const { user, isLoaded } = useUser();
   const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
+  
+  // Ref for menu items hover effect
+  const itemsRef = useRef([]);
 
   // Fix hydration mismatch by ensuring client-side only code runs after mounting
   useEffect(() => {
@@ -84,93 +92,199 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   if (!mounted) {
     return null;
   }
+  
+  // Animation variants
+  const sidebarVariants = {
+    open: {
+      x: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+        staggerChildren: 0.05,
+        delayChildren: 0.1
+      }
+    },
+    closed: {
+      x: "-85%",
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+        staggerChildren: 0.05,
+        staggerDirection: -1
+      }
+    }
+  };
+  
+  const itemVariants = {
+    open: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 20,
+      }
+    },
+    closed: {
+      x: -20,
+      opacity: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 20,
+      }
+    }
+  };
+  
+  const iconVariants = {
+    hover: {
+      scale: 1.2,
+      rotate: 5,
+      transition: { type: "spring", stiffness: 400 }
+    },
+    initial: {
+      scale: 1,
+      rotate: 0
+    }
+  };
+  
+  // Navigation items for mapping
+  const navItems = [
+    { href: "/dashboard", label: "Dashboard", icon: TbLayoutDashboardFilled },
+    { href: "/learn", label: "Learn", icon: SiGoogleclassroom },
+    { href: "/playground", label: "Playground", icon: FaCodepen },
+    { href: "/dev-discuss", label: "DevDiscuss", icon: FaComments },
+    { href: "/ai-assistant", label: "AI Assistant", icon: FaRobot },
+    { href: "/ai-mindmap", label: "AI Mind Map", icon: FaBrain },
+    { href: "/notifications", label: "Notifications", icon: MdNotifications },
+    { href: "/profile", label: "Profile", icon: FaUser },
+    { href: "/help", label: "Help", icon: FaQuestionCircle },
+  ];
+  
+  // Optional admin menu item
+  if (isAdmin) {
+    navItems.push({ href: "/admin", label: "Admin Panel", icon: FaUserShield, isAdmin: true });
+  }
 
   return (
     <div className="flex flex-row">
-      <div
-        className={`fixed top-20 left-0 h-full bg-sky-50 transition-transform z-50 shadow-2xl ${
-          isOpen ? "translate-x-0" : "-translate-x-[85%]"
-        }`}
+      <motion.div
+        variants={sidebarVariants}
+        initial={false}
+        animate={isOpen ? "open" : "closed"}
+        className={`fixed top-20 left-0 h-full bg-gradient-to-b from-indigo-950 via-indigo-900 to-blue-900 transition-all z-50 shadow-2xl rounded-r-2xl`}
       >
-        <nav className="flex flex-col w-56 p-4 pr-12 space-y-4">
-          <Link
-            href="/dashboard"
-            className="flex items-center text-gray-900 hover:text-indigo-600 text-lg p-2"
+        <div className="py-4 relative flex flex-col h-full">
+          {/* Logo with animation */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="mb-8 px-6"
           >
-            <TbLayoutDashboardFilled className="mr-2" />
-            Dashboard
-          </Link>
-          <Link
-            href="/learn"
-            className="flex items-center text-gray-900 hover:text-indigo-600 text-lg p-2"
-          >
-            <SiGoogleclassroom className="mr-2" />
-            Learn
-          </Link>
-          <Link
-            href="/playground"
-            className="flex items-center text-gray-900 hover:text-indigo-600 text-lg p-2"
-          >
-            <FaCodepen className="mr-2" />
-            Playground
-          </Link>
-          <Link
-            href="/dev-discuss"
-            className="flex items-center text-gray-900 hover:text-indigo-600 text-lg p-2"
-          >
-            <FaComments className="mr-2" />
-            DevDiscuss
-          </Link>
-          <Link
-            href="/notifications"
-            className="flex items-center text-gray-900 hover:text-indigo-600 text-lg p-2"
-          >
-            <MdNotifications className="mr-2" />
-            Notifications
-          </Link>
-          <Link
-            href="/profile"
-            className="flex items-center text-gray-900 hover:text-indigo-600 text-lg p-2"
-          >
-            <FaUser className="mr-2" />
-            Profile
-          </Link>
-          <Link
-            href="/help"
-            className="flex items-center text-gray-900 hover:text-indigo-600 text-lg p-2"
-          >
-            <FaQuestionCircle className="mr-2" />
-            Help
-          </Link>
+            <div className="flex items-center">
+              <div className="bg-gradient-to-br from-blue-400 to-indigo-600 p-2 rounded-lg shadow-lg">
+                <motion.div
+                  animate={{ rotate: [0, 10, 0], y: [0, -2, 0] }}
+                  transition={{ 
+                    repeat: Infinity, 
+                    duration: 3, 
+                    ease: "easeInOut"
+                  }}
+                >
+                  <span className="text-white font-bold text-2xl">c_</span>
+                </motion.div>
+              </div>
+              <h1 className="ml-2 text-white font-bold text-xl">codeSync</h1>
+            </div>
+          </motion.div>
           
-          {isAdmin && (
-            <Link
-              href="/admin"
-              className="flex items-center text-blue-700 hover:text-blue-900 font-semibold text-lg p-2"
-            >
-              <FaUserShield className="mr-2" />
-              Admin Panel
-            </Link>
-          )}
-        </nav>
-        <div className="absolute right-2 top-2">
-          {!isOpen ? (
-            <button
-              onClick={toggleSidebar}
-              className="text-indigo-600 hover:text-indigo-700"
-            >
-              <TbLayoutSidebarLeftExpandFilled fontSize="22px" />
-            </button>
-          ) : (
-            <button
-              onClick={toggleSidebar}
-              className="text-indigo-600 hover:text-indigo-700"
-            >
-              <TbLayoutSidebarLeftCollapseFilled fontSize="22px" />
-            </button>
-          )}
+          {/* Nav items with animations */}
+          <nav className="flex flex-col w-56 space-y-1 px-4 flex-grow">
+            {navItems.map((item, index) => {
+              const isActive = pathname === item.href;
+              return (
+                <motion.div
+                  key={item.href}
+                  variants={itemVariants}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  <Link
+                    href={item.href}
+                    className={`flex items-center rounded-xl p-3 ${
+                      isActive 
+                        ? "bg-white/10 text-white" 
+                        : item.isAdmin 
+                          ? "text-blue-300 hover:bg-white/5 hover:text-blue-200" 
+                          : "text-gray-300 hover:bg-white/5 hover:text-white"
+                    } transition-all duration-200 relative group overflow-hidden`}
+                  >
+                    {/* Background glow effect on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-all duration-1000"></div>
+                    
+                    {/* Indicator line for active item */}
+                    {isActive && (
+                      <motion.div 
+                        className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-400 to-indigo-400"
+                        layoutId="activeIndicator"
+                        initial={{ height: 0 }}
+                        animate={{ height: '100%' }}
+                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      />
+                    )}
+                    
+                    {/* Icon with animation */}
+                    <motion.div
+                      variants={iconVariants}
+                      initial="initial"
+                      whileHover="hover"
+                      className={`mr-3 ${isActive ? "text-indigo-300" : ""}`}
+                    >
+                      <item.icon size={isActive ? 22 : 20} />
+                    </motion.div>
+                    
+                    {/* Label text */}
+                    <span className="font-medium">{item.label}</span>
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </nav>
+          
+          {/* Profile section at bottom */}
+          <motion.div 
+            variants={itemVariants}
+            className="mt-auto px-4 py-3 border-t border-white/10"
+          >
+            {user && (
+              <div className="flex items-center p-2 rounded-lg bg-white/5 text-white">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-400 to-blue-500 flex items-center justify-center">
+                  {user.firstName?.charAt(0) || "U"}
+                </div>
+                <div className="ml-2 truncate">
+                  <p className="text-sm font-medium">{user.firstName} {user.lastName}</p>
+                </div>
+              </div>
+            )}
+          </motion.div>
         </div>
-      </div>
+        
+        {/* Toggle button with animation */}
+        <motion.div 
+          className="absolute -right-4 top-4 bg-gradient-to-r from-indigo-700 to-indigo-600 rounded-full shadow-lg p-1 cursor-pointer"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={toggleSidebar}
+        >
+          {!isOpen ? (
+            <TbLayoutSidebarLeftExpandFilled className="text-white" fontSize="22px" />
+          ) : (
+            <TbLayoutSidebarLeftCollapseFilled className="text-white" fontSize="22px" />
+          )}
+        </motion.div>
+      </motion.div>
     </div>
   );
 };

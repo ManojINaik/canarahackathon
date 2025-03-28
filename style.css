@@ -1,0 +1,142 @@
+/* Basic Reset & Variables */
+:root {
+    --bg-dark: #0a192f; /* Deep blue */
+    --bg-medium: #112240; /* Slightly lighter blue */
+    --text-color: #ccd6f6; /* Light grey-blue */
+    --text-highlight: #64ffda; /* Cyan accent */
+    --accent-glow: #7DF9FF; /* Neon Cyan/Blue for effects */
+    --accent-lime: #ADFF2F; /* Neon Lime for contrast */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-color);
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+h1, h2, h3 {
+    color: var(--text-highlight);
+    margin-bottom: 1rem;
+}
+
+section {
+    min-height: 80vh;
+    padding: 4rem 5%;
+    position: relative;
+    overflow: hidden; /* Contain elements */
+}
+
+/* Smooth Scrolling Setup */
+/* Assign height to the wrapper */
+#smooth-wrapper {
+  position: relative;
+  overflow: hidden; /* Crucial for ScrollSmoother */
+}
+
+/* Give the content element a flexible height */
+#smooth-content {
+  overflow: visible;
+  width: 100%;
+}
+
+
+/* Hero Section */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: radial-gradient(circle, var(--bg-medium) 0%, var(--bg-dark) 70%);
+}
+
+.hero-content {
+    /* Initial state for animation */
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.seedling .sprout {
+    /* Initial state for sprout animation */
+    transform-origin: 50% 80%; /* Base of the sprout */
+    scaleY: 0;
+}
+
+.main-headline {
+    font-size: clamp(2.5rem, 8vw, 5rem); /* Responsive font size */
+    margin: 1.5rem 0;
+    font-weight: 700;
+}
+
+.main-headline span {
+    display: inline-block; /* Needed for individual animation */
+    /* Initial state for stagger animation */
+    opacity: 0;
+    transform: translateY(30px) scale(0.8);
+}
+
+.sub-headline {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    opacity: 0.8;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    opacity: 0.7;
+    font-size: 0.9rem;
+    animation: bounce 2s infinite ease-in-out;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Learning Path Section (Placeholder Styling) */
+.learning-path {
+    text-align: center;
+}
+
+/* Concept Explainer Section */
+.concept-explainer {
+    background-color: var(--bg-medium);
+}
+
+.concept-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.concept-card {
+    background-color: var(--bg-dark);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    /* Initial state for ScrollTrigger animation */
+    opacity: 0;
+    transform: translateY(50px);
+}
+
+.concept-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(100, 255, 218, 0.2);
+}
+
+.concept-card h3 {
+    color: var(--accent-lime);
+    margin-bottom: 0.5rem;
+} 

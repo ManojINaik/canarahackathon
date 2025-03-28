@@ -9,6 +9,7 @@ import QuestionList from "@/app/components/dev-discuss/QuestionList";
 import QuestionTabs from "@/app/components/dev-discuss/QuestionTabs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 export default function Home() {
   const [selectedTab, setSelectedTab] = useState("all");
@@ -61,18 +62,57 @@ export default function Home() {
       .sort((a, b) => b.score - a.score); // Sort by score in descending order
   }
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15
+      }
+    }
+  };
+
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       <QuestionHeader />
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        <QuestionFilters questionCount={displayedQuestions.length} />
-        <QuestionTabs
-          selectedTab={selectedTab}
-          onTabChange={setSelectedTab}
-          tabs={tabs}
-        />
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="max-w-7xl mx-auto px-4 py-8"
+      >
+        <motion.div variants={itemVariants}>
+          <QuestionFilters questionCount={displayedQuestions.length} />
+        </motion.div>
+        
+        <motion.div variants={itemVariants}>
+          <QuestionTabs
+            selectedTab={selectedTab}
+            onTabChange={setSelectedTab}
+            tabs={tabs}
+          />
+        </motion.div>
+        
         <QuestionList questions={displayedQuestions} />
-      </div>
+      </motion.div>
+      
+      {/* Decorative elements */}
+      <div className="fixed -z-10 top-1/3 right-0 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl"></div>
+      <div className="fixed -z-10 bottom-0 left-1/4 w-96 h-96 bg-indigo-400/10 rounded-full blur-3xl"></div>
     </main>
   );
 }

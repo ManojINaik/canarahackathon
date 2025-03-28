@@ -1,20 +1,29 @@
-import ClientLayout from "@/app/components/ClientLayout";
-import ProfileForm from "./components/ProfileForm";
+import { getUserProfile } from "@/lib/actions/profileActions";
+import { currentUser } from "@clerk/nextjs";
+import { ProfileContent } from "./profile-client";
 
 export const metadata = {
   title: "Profile | XtraDrill",
   description: "Update your developer profile with skills, resume, and job preferences",
 };
 
-export default function ProfilePage() {
-  return (
-    <ClientLayout>
-      <div className="p-6">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Developer Profile</h1>
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <ProfileForm />
-        </div>
-      </div>
-    </ClientLayout>
-  );
+export default async function ProfilePage() {
+  // Get current user
+  const user = await currentUser();
+  
+  // Get profile data from API
+  let userData = null;
+  if (user) {
+    const response = await getUserProfile();
+    if (response.success) {
+      userData = {
+        ...response.data,
+        name: `${user.firstName} ${user.lastName}`,
+        email: user.emailAddresses[0]?.emailAddress,
+        imageUrl: user.imageUrl
+      };
+    }
+  }
+  
+  return <ProfileContent userData={userData} />;
 } 
